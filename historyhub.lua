@@ -523,16 +523,29 @@ wget.callbacks.write_to_warc = function(url, http_stat)
     error("No item name found.")
   end
   is_initial_url = false
+  local data = read_file(http_stat["local_file"])
+  if string.match(data, "Incapsula incident ID")
+    or string.match(data, "_Incapsula_Resource") then
+    io.stdout:write("You are banned. Sleeping 1800 seconds.\n")
+    io.stdout:flush()
+    os.execute("sleep 1800")
+    retry_url = true
+    return false
+  end
   if http_stat["statcode"] ~= 200
     and http_stat["statcode"] ~= 301
     and http_stat["statcode"] ~= 302
     and http_stat["statcode"] ~= 404 then
+    io.stdout:write("Bad status code.\n")
+    io.stdout:flush()
     retry_url = true
     return false
   end
   if http_stat["len"] == 0
     and http_stat["statcode"] < 300
     and not string.match(url["url"], "/utility/scripted%-file%.ashx") then
+    io.stdout:write("Empty file...\n")
+    io.stdout:flush()
     retry_url = true
     return false
   end
