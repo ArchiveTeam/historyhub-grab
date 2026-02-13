@@ -525,6 +525,7 @@ wget.callbacks.write_to_warc = function(url, http_stat)
   is_initial_url = false
   if http_stat["statcode"] ~= 200
     and http_stat["statcode"] ~= 301
+    and http_stat["statcode"] ~= 302
     and http_stat["statcode"] ~= 404 then
     retry_url = true
     return false
@@ -572,7 +573,7 @@ wget.callbacks.httploop_result = function(url, err, http_stat)
     io.stdout:write("Server returned bad response. ")
     io.stdout:flush()
     tries = tries + 1
-    local maxtries = 8
+    local maxtries = 5
     if tries > maxtries then
       io.stdout:write(" Skipping.\n")
       io.stdout:flush()
