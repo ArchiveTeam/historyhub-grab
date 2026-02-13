@@ -526,7 +526,7 @@ wget.callbacks.write_to_warc = function(url, http_stat)
   local data = read_file(http_stat["local_file"])
   if string.match(data, "Incapsula incident ID")
     or string.match(data, "_Incapsula_Resource") then
-    io.stdout:write("You are banned. Sleeping 1800 seconds.\n")
+    io.stdout:write("You are banned. THE SOLUTION:\nPlease copy the \"Cookie\" field from your browser for historyhub.history.gov and provide it to the container as environment variable HISTORYHUB_COOKIES.\nYou can do this in `docker run` with option `-e \"HISTORYHUB_COOKIES=<entire \"Cookie\" request header from browser>`.\nSleeping 1800 seconds.\n")
     io.stdout:flush()
     os.execute("sleep 1800")
     retry_url = true
