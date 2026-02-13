@@ -76,7 +76,7 @@ if not WGET_AT:
 #
 # Update this each time you make a non-cosmetic change.
 # It will be added to the WARC files and reported to the tracker.
-VERSION = '20260213.07'
+VERSION = '20260213.08'
 USER_AGENT = 'Mozilla/5.0 (X11; Linux i686; rv:147.0) Gecko/20100101 Firefox/147.0'
 TRACKER_ID = 'historyhub'
 TRACKER_HOST = 'legacy-api.arpa.li'
@@ -268,8 +268,11 @@ class WgetArgs(object):
                 wget_args.extend(['--warc-header', 'historyhub-discussion: '+item_value])
                 wget_args.append('https://historyhub.history.gov/f/discussions/{}/dummy'.format(item_value))
                 if 'HISTORYHUB_COOKIES' in os.environ:
-                    print('Using cookies '+os.environ['HISTORYHUB_COOKIES'])
-                    wget_args.extend(['--header', 'Cookie: '+os.environ['HISTORYHUB_COOKIES']])
+                    cookie = os.environ['HISTORYHUB_COOKIES'].strip()
+                    if not cookie.startswith('Cookie: '):
+                        cookie = 'Cookie: ' + cookie
+                    print('Using header '+cookie)
+                    wget_args.extend(['--header', cookie])
             elif item_type == 'asset':
                 url = 'https://' + item_value
                 wget_args.extend(['--warc-header', 'historyhub-asset: '+url])
