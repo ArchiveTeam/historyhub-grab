@@ -164,7 +164,7 @@ allowed = function(url, parenturl)
         parenturl
         and not string.match(url, "&_w_")
         and (
-          string.match(parenturl, "/discussions/[0-9]+/[^/]+/[0-9]+")
+          string.match(parenturl, "/f/[^/]+/[0-9]+/[^/]+/[0-9]+")
           or string.match(parenturl, "[%?&]pifragment%-[0-9]+=")
           or string.match(parenturl, "[%?&]ContentTypeId=")
         )
@@ -446,7 +446,8 @@ wget.callbacks.get_urls = function(file, url, is_css, iri)
     and status_code < 300
     and item_type ~= "asset" then
     html = read_file(file)
-    if string.match(url, "/f/discussions/[0-9]+/[^/%?]+/?$") then
+    if string.match(url, "/f/[^/]+/[0-9]+/[^/%?]+/?$")
+      or string.match(url, "/f/[^/]+/[0-9]+/[^/%?]+/[0-9]+/?$") then
       local replies_data = string.match(html, "jQuery%.telligent%.evolution%.widgets%.thread%.register%({(.-)}%);")
       local newurl = decode_codepoint(string.match(replies_data, "listRepliesUrl:%s*'([^']+)'"))
       for key, default in pairs({
